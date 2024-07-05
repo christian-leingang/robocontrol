@@ -11,6 +11,8 @@ function Home() {
   const [client, setClient] = useState(null);
   const [config, setConfig] = useState({});
   const [connectStatus, setConnectStatus] = useState('Connect');
+  const [ownMessages, setOwnMessages] = useState([]);
+
 
   const handleConfigChange = ({ url, port, path, topic }) => {
     console.log('path: ', path);
@@ -44,17 +46,24 @@ function Home() {
   return (
     <div>
       <Header />
-      <div className='grid flex-1 px-8 py-12'>
+      <div className='grid flex-1 p-8'>
         <main className='mx-auto w-full max-w-7xl'>
           <Config onConfigChange={handleConfigChange} connectionStatus={connectStatus} />
-          <div className='flex h-full w-full'>
+          {client && client.connected ? (""): (
+                        <h2 className='text-center mt-4'>Can't show messages, please connect to the broker.</h2>
+          )}
+            
+          <div className={`flex h-full w-full mt-4 gap-4 ${client && client.connected ? "": "blur-md"} `}>
             <div className='w-1/2'>
               <ChatList client={client} />
             </div>
             <div className='w-1/2'>
-              <PublishButtons client={client} topic={config.topic} />
+              <PublishButtons client={client} topic={config.topic} setOwnMessages={setOwnMessages} />
             </div>
           </div>
+          {/* ) : (
+          )
+          } */}
         </main>
       </div>
     </div>

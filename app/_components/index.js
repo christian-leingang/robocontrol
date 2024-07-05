@@ -22,12 +22,14 @@ function Home() {
     setConfig({ url, port, path, topic });
   };
 
+  //OLD CODE
+
   return (
     <div>
       <Config onConfigChange={handleConfigChange} />
-      <div style={{ display: 'flex' }}>
+      <div className='flex mt-6'>
         <ChatList client={client} />
-        <PublishButtons client={client} topic={config.topic} />
+        <PublishButtons client={client} topic={config.topic} setOwnMessages={setOwnMessages} />
       </div>
     </div>
   );
