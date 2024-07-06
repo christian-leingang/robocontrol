@@ -40,7 +40,7 @@ const ChatList = ({ client }) => {
 
   return (
     <div className='mx-auto h-[70vh] rounded-lg border border-gray-200 shadow-md dark:border-gray-700'>
-      <h2 className='ml-4 mt-4 text-xl font-semibold'>Chat</h2>
+      <h2 className='ml-4 mt-4 text-2xl font-semibold'>Chat</h2>
       <div className='flex h-[calc(70vh-3rem)] flex-col-reverse overflow-auto'>
         {messages.length === 0 && (
           <div className='my-auto flex h-full items-center justify-center text-sm'>

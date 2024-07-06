@@ -3,8 +3,14 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useEffect, useRef, useState } from 'react';
+import {
+  IconPlayerPause,
+  IconPlayerPlay,
+  IconPlayerSkipForward,
+  IconPlayerStop,
+  IconX,
+} from '@tabler/icons-react';
 
 const PublishButtons = ({ client, topic }) => {
   const [speedInput, setSpeedInput] = useState(60);
@@ -42,11 +48,11 @@ const PublishButtons = ({ client, topic }) => {
   };
 
   const buttonConfigs = [
-    { action: sendStart, color: 'bg-green', text: 'Start' },
-    { action: sendPause, color: 'bg-yellow', text: 'Pause' },
-    { action: sendUnpause, color: 'bg-emerald', text: 'Unpause' },
-    { action: sendStop, color: 'bg-red', text: 'Stop' },
-    { action: sendEnd, color: 'bg-zinc', text: 'End' },
+    { action: sendStart, color: 'bg-green', text: 'Start', icon: IconPlayerPlay },
+    { action: sendPause, color: 'bg-yellow', text: 'Pause', icon: IconPlayerPause },
+    { action: sendUnpause, color: 'bg-emerald', text: 'Unpause', icon: IconPlayerSkipForward },
+    { action: sendStop, color: 'bg-red', text: 'Stop', icon: IconPlayerStop },
+    { action: sendEnd, color: 'bg-zinc', text: 'End', icon: IconX },
   ];
 
   function createMessage(msg, data = null) {
@@ -98,8 +104,9 @@ const PublishButtons = ({ client, topic }) => {
 
   return (
     <div className='mx-auto h-[70vh] rounded-lg border border-gray-200 p-4 shadow-md dark:border-gray-700'>
-      <h2 className='mb-4 text-xl font-semibold'>Publish Messages</h2>
+      <h2 className='mb-4 text-2xl font-semibold'>Publish Messages</h2>
 
+      <h3 className='font-bold'>Receivers</h3>
       <div className='checkboxes flex gap-2'>
         <div className='flex items-center space-x-2'>
           <Checkbox
@@ -120,28 +127,27 @@ const PublishButtons = ({ client, topic }) => {
         ))}
       </div>
 
+      <h3 className='mt-6 font-bold'>Actions</h3>
       <div className='flex items-center gap-2'>
-        {buttonConfigs.map(({ action, color, text }) => (
+        {buttonConfigs.map(({ action, color, text, icon: Icon }) => (
           <Button
             key={text}
             onClick={action}
-            className={`my-4 rounded-md ${color}-500 hover: w-20 px-4 py-2 shadow-lg hover:brightness-95 hover:${color}-500`}
+            className={`my-2 rounded-md ${color}-500 hover: w-1/5 px-4 py-2 shadow-lg hover:brightness-95 hover:${color}-500`}
             disabled={activeChecksCount === 0}
           >
-            {text}
+            <p className='mr-1'>{text}</p> <Icon size={20} />
           </Button>
         ))}
       </div>
       <div>
-        <Label htmlFor='speed' className='ext-xl'>
-          Speed
-        </Label>
-        <div className='mb-2 flex max-w-sm items-center gap-2'>
+        <h3 className='mt-6 font-bold'>Speed</h3>
+        <div className='my-2 flex items-center gap-2'>
           {speedIntervall.map((speed) => (
             <Button
               key={speed}
               onClick={() => sendSpeed(speed)}
-              className='w-20 rounded-md px-4 py-2 shadow-lg'
+              className='w-1/4 rounded-md px-4 py-2 shadow-lg'
               disabled={activeChecksCount === 0}
             >
               {speed}%
@@ -158,11 +164,11 @@ const PublishButtons = ({ client, topic }) => {
             max='100'
             step='10'
             disabled={activeChecksCount === 0}
-            className='w-[10.5rem] max-w-[15rem] rounded-md border-2 border-gray-300 p-1'
+            className='w-1/2 rounded-md border-2 border-gray-300 p-1'
           />
           <Button
             onClick={() => sendSpeed(speedInput)}
-            className='w-[10.5rem] rounded-md px-4 py-2 shadow-lg'
+            className='w-1/2 rounded-md px-4 py-2 shadow-lg'
             disabled={activeChecksCount === 0}
           >
             Update Speed
