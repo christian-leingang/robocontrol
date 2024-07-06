@@ -1,47 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import mqtt from 'mqtt';
+import { useState } from 'react';
 import Config from './_components/Config';
 import ChatList from './_components/ChatList';
 import PublishButtons from './_components/Commands';
 import Header from './_components/Header';
+import { useMqttClient } from './_lib/useMqttClient';
 
 function Home() {
-  const [client, setClient] = useState(null);
   const [config, setConfig] = useState({});
-  const [connectStatus, setConnectStatus] = useState('Connect');
-  const [ownMessages, setOwnMessages] = useState([]);
+  const { client, connectStatus } = useMqttClient(config);
 
+  const handleConfigChange = (newConfig) => {
+    if (
+      newConfig.url === config.url &&
+      newConfig.port === config.port &&
+      newConfig.path === config.path &&
+      newConfig.topic === config.topic
+    )
+      return;
 
-  const handleConfigChange = ({ url, port, path, topic }) => {
-    console.log('path: ', path);
-
-    const newClient = mqtt.connect(`${url}:${port}/${path}`);
-    newClient.on('connect', () => {
-      newClient.subscribe(topic);
-    });
-    console.log('newClient: ', newClient);
-
-    setClient(newClient);
-    setConfig({ url, port, path, topic });
+    setConfig(newConfig);
   };
-
-  useEffect(() => {
-    if (client) {
-      console.log(client);
-      client.on('connect', () => {
-        setConnectStatus('Connected');
-      });
-      client.on('error', (err) => {
-        console.error('Connection error: ', err);
-        client.end();
-      });
-      client.on('reconnect', () => {
-        setConnectStatus('Reconnecting');
-      });
-    }
-  }, [client]);
 
   return (
     <div>
@@ -49,21 +29,24 @@ function Home() {
       <div className='grid flex-1 p-8'>
         <main className='mx-auto w-full max-w-7xl'>
           <Config onConfigChange={handleConfigChange} connectionStatus={connectStatus} />
-          {client && client.connected ? (""): (
-                        <h2 className='text-center mt-4'>Can't show messages, please connect to the broker.</h2>
+          {connectStatus === 'Connected' ? (
+            ''
+          ) : (
+            <h2 className='absolute left-0 right-0 top-96 z-10 mt-4 text-center text-2xl font-bold'>
+              Can&apos;t show messages, please connect to the broker.
+            </h2>
           )}
-            
-          <div className={`flex h-full w-full mt-4 gap-4 ${client && client.connected ? "": "blur-md"} `}>
+
+          <div
+            className={`mt-4 flex w-full gap-4 ${connectStatus === 'Connected' ? '' : 'pointer-events-none blur-2xl'} `}
+          >
             <div className='w-1/2'>
               <ChatList client={client} />
             </div>
             <div className='w-1/2'>
-              <PublishButtons client={client} topic={config.topic} setOwnMessages={setOwnMessages} />
+              <PublishButtons client={client} topic={config.topic} />
             </div>
           </div>
-          {/* ) : (
-          )
-          } */}
         </main>
       </div>
     </div>
