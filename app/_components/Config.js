@@ -1,22 +1,27 @@
 'use client';
 
-import { IconPlugConnected } from '@tabler/icons-react';
+import { IconEye, IconEyeOff, IconPingPong, IconPlugConnected } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
+import CustomTooltip from './CustomTooltip';
+
+// Nachrichten zum Testen:
+// {"sender_id": 1, "data": null, "receivers": [1], "msg": "ready"}
+// {"sender_id": 1, "data": null, "receivers": null, "msg": "robot_start"}
 
 const Config = ({ onConfigChange, connectionStatus }) => {
   const [url, setUrl] = useState(process.env.NEXT_PUBLIC_MQTT_URI);
   const [port, setPort] = useState(process.env.NEXT_PUBLIC_MQTT_PORT);
   const [path, setPath] = useState(process.env.NEXT_PUBLIC_MQTT_PATH);
   const [topic, setTopic] = useState(process.env.NEXT_PUBLIC_MQTT_TOPIC);
+  const [passwordVisible, setPasswordVisibility] = useState(true);
+  const [passwordType, setPasswordType] = useState('password');
 
   const handleInitialSubmit = () => {
     if (!url || !port || !path || !topic) {
       console.log('Please fill all the fields');
-
       return;
     }
     onConfigChange({ url, port, path, topic });
@@ -25,6 +30,15 @@ const Config = ({ onConfigChange, connectionStatus }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleInitialSubmit();
+  };
+
+  const handleToggle = () => {
+    setPasswordVisibility(!passwordVisible);
+    if (passwordType === 'password') {
+      setPasswordType('text');
+    } else {
+      setPasswordType('password');
+    }
   };
 
   //Comment out if Client is constantly refreshing
@@ -36,19 +50,15 @@ const Config = ({ onConfigChange, connectionStatus }) => {
     <form onSubmit={handleSubmit}>
       <div className='m-auto flex justify-between rounded-md border border-gray-200 p-4 shadow-md dark:border-gray-700'>
         <div className='flex items-end pb-2'>
-          <TooltipProvider delayDuration={200}>
-            <Tooltip>
-              <TooltipTrigger>
-                <IconPlugConnected
-                  stroke={2}
-                  color={`${connectionStatus == 'Connected' ? 'green' : 'red'}`}
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <div>Status: {connectionStatus}</div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <CustomTooltip
+            tooltipText={`Connection Status: ${connectionStatus}`}
+            key='connectionStatus'
+          >
+            <IconPlugConnected
+              stroke={2}
+              color={`${connectionStatus == 'Connected' ? 'green' : 'red'}`}
+            />
+          </CustomTooltip>
         </div>
         <div className='ml-6 flex flex-1 items-end gap-4'>
           <div className='grid w-1/4 max-w-sm items-center gap-1.5'>
@@ -65,12 +75,24 @@ const Config = ({ onConfigChange, connectionStatus }) => {
           </div>
           <div className='grid w-1/4 max-w-sm items-center gap-1.5'>
             <Label htmlFor='topic'>Topic</Label>
-            <Input
-              type='text'
-              id='topic'
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-            />
+            <div className='flex'>
+              <Input
+                type={passwordType}
+                id='topic'
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+              />
+              <span
+                className='flex cursor-pointer items-center justify-around'
+                onClick={handleToggle}
+              >
+                {passwordVisible ? (
+                  <IconEye className='absolute mr-10' size={20} />
+                ) : (
+                  <IconEyeOff className='absolute mr-10' size={20} />
+                )}
+              </span>
+            </div>
           </div>
           <Button type='submit'>Configure</Button>
         </div>

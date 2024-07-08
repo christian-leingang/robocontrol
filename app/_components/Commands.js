@@ -50,7 +50,7 @@ const PublishButtons = ({ client, topic }) => {
   const buttonConfigs = [
     { action: sendStart, color: 'bg-green', text: 'Start', icon: IconPlayerPlay },
     { action: sendPause, color: 'bg-yellow', text: 'Pause', icon: IconPlayerPause },
-    { action: sendUnpause, color: 'bg-emerald', text: 'Unpause', icon: IconPlayerSkipForward },
+    { action: sendUnpause, color: 'bg-emerald', text: 'Resume', icon: IconPlayerSkipForward },
     { action: sendStop, color: 'bg-red', text: 'Stop', icon: IconPlayerStop },
     { action: sendEnd, color: 'bg-zinc', text: 'End', icon: IconX },
   ];
@@ -58,11 +58,11 @@ const PublishButtons = ({ client, topic }) => {
   function createMessage(msg, data = null) {
     return {
       msg,
-      sender_id: 'webapp',
+      sender_id: 99,
       data,
       receivers: Object.keys(checkboxes)
         .filter((key) => checkboxes[key])
-        .map((key) => key.split('_')[1]),
+        .map((key) => +key.split('_')[1]),
     };
   }
 
@@ -103,7 +103,7 @@ const PublishButtons = ({ client, topic }) => {
   }
 
   return (
-    <div className='mx-auto h-[70vh] rounded-lg border border-gray-200 p-4 shadow-md dark:border-gray-700'>
+    <div className='mx-auto h-fit min-h-[70vh] rounded-lg border border-gray-200 p-4 shadow-md dark:border-gray-700'>
       <h2 className='mb-4 text-2xl font-semibold'>Publish Messages</h2>
 
       <h3 className='font-bold'>Receivers</h3>
