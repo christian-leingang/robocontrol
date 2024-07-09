@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import ChatList from '../_components/ChatList';
 import PublishButtons from '../_components/Commands';

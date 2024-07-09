@@ -1,3 +1,5 @@
+'use client';
+
 import { Label } from '@/components/ui/label';
 import Header from '../_components/Header';
 import { Input } from '@/components/ui/input';
