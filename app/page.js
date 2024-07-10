@@ -13,7 +13,7 @@ function Home() {
   }, []);
 
   return (
-    <> {!isAuthenticated ? <Login setIsAuthenticate={setIsAuthenticated} /> : <Dashboard />}</>
+    <> {!isAuthenticated ? <Login setIsAuthenticated={setIsAuthenticated} /> : <Dashboard />}</>
   );
 }
 
