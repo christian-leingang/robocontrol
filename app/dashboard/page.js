@@ -44,30 +44,28 @@ function Dashboard() {
   };
 
   return (
-    <div>
-      <div className='grid flex-1 p-8 pt-4'>
-        <main className='mx-auto w-full max-w-7xl'>
-          <Config onConfigChange={handleConfigChange} connectionStatus={connectStatus} />
-          {connectStatus === 'Connected' ? (
-            ''
-          ) : (
-            <h2 className='absolute left-0 right-0 top-96 z-10 mt-4 text-center text-2xl font-bold'>
-              Can&apos;t show messages, please connect to the broker.
-            </h2>
-          )}
+    <div className='grid flex-1 p-8 pt-4'>
+      <main className='mx-auto w-full max-w-7xl'>
+        <Config onConfigChange={handleConfigChange} connectionStatus={connectStatus} />
+        {connectStatus === 'Connected' ? (
+          ''
+        ) : (
+          <h2 className='absolute left-0 right-0 top-96 z-10 mt-4 text-center text-2xl font-bold'>
+            Can&apos;t show messages, please connect to the broker.
+          </h2>
+        )}
 
-          <div
-            className={`mt-4 flex w-full gap-4 ${connectStatus === 'Connected' ? '' : 'pointer-events-none blur-2xl'} `}
-          >
-            <div className='w-1/2'>
-              <ChatList client={client} pingPong={pingPong} setPingPong={setPingPong} />
-            </div>
-            <div className='w-1/2'>
-              <PublishButtons client={client} topic={config.topic} />
-            </div>
+        <div
+          className={`mt-4 flex w-full gap-4 ${connectStatus === 'Connected' ? '' : 'pointer-events-none blur-2xl'} `}
+        >
+          <div className='w-1/2'>
+            <ChatList client={client} pingPong={pingPong} setPingPong={setPingPong} />
           </div>
-        </main>
-      </div>
+          <div className='w-1/2'>
+            <PublishButtons client={client} topic={config.topic} />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

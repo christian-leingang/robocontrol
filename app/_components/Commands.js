@@ -103,7 +103,7 @@ const PublishButtons = ({ client, topic }) => {
   }
 
   return (
-    <div className='mx-auto h-fit min-h-[70vh] rounded-lg border border-gray-200 p-4 shadow-md dark:border-gray-700'>
+    <div className='mx-auto h-fit min-h-[70vh] rounded-lg border border-gray-200 bg-white p-4 shadow-md dark:border-gray-800 dark:bg-slate-800'>
       <h2 className='mb-4 text-2xl font-semibold'>Publish Messages</h2>
 
       <h3 className='font-bold'>Receivers</h3>

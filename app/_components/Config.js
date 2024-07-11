@@ -48,12 +48,9 @@ const Config = ({ onConfigChange, connectionStatus }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className='m-auto flex justify-between rounded-md border border-gray-200 p-4 shadow-md dark:border-gray-700'>
+      <div className='m-auto flex justify-between rounded-md border border-gray-200 bg-white p-4 shadow-md dark:border-gray-800 dark:bg-slate-800'>
         <div className='flex items-end pb-2'>
-          <CustomTooltip
-            tooltipText={`Connection Status: ${connectionStatus}`}
-            key='connectionStatus'
-          >
+          <CustomTooltip tooltipText={`Connection Status: ${connectionStatus}`}>
             <IconPlugConnected
               stroke={2}
               color={`${connectionStatus == 'Connected' ? 'green' : 'red'}`}

@@ -114,7 +114,7 @@ const ChatList = ({ client, pingPong, setPingPong }) => {
   };
 
   return (
-    <div className='mx-auto h-[70vh] rounded-lg border border-gray-200 shadow-md dark:border-gray-700'>
+    <div className='mx-auto h-[70vh] rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-800 dark:bg-slate-800'>
       <div className='flex flex-row items-baseline justify-between'>
         <h2 className='ml-4 mt-4 text-2xl font-semibold'>Chat</h2>
 
@@ -174,7 +174,7 @@ const ChatList = ({ client, pingPong, setPingPong }) => {
 function getColorFromState(state) {
   switch (state) {
     case ROBOT_STATES.OFFLINE:
-      return 'grey';
+      return 'gray';
     case ROBOT_STATES.READY:
       return 'orange';
     case ROBOT_STATES.RUNNING:
@@ -201,8 +201,8 @@ function RoboStatus({ robot_id, status, lastPong, index, pingPong }) {
   return (
     <div>
       {pingPong ? (
-        <CustomTooltip tooltipText={timeSinceLastPongString} key={index}>
-          <div className='flex items-center gap-2'>
+        <CustomTooltip tooltipText={timeSinceLastPongString}>
+          <div className='mt-[6px] flex items-center gap-2'>
             <div className='flex'>
               <IconCar stroke={2} />
               {robot_id}:

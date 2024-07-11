@@ -16,8 +16,12 @@ export default function RootLayout({ children }) {
         className={`${inter.className} bg-primary-950 text-primary-100 relative flex min-h-screen flex-col antialiased`}
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <Header />
-          {children}
+          <div className='flex h-screen flex-col'>
+            <Header />
+            <div className='flex flex-grow items-center justify-center bg-gray-100 dark:bg-slate-950'>
+              {children}
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>
