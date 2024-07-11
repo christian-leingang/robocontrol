@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import ChatList from '../_components/ChatList';
 import PublishButtons from '../_components/Commands';
 import Config from '../_components/Config';
-import Header from '../_components/Header';
 import { useMqttClient } from '../_lib/useMqttClient';
 
 function Dashboard() {

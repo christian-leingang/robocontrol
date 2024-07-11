@@ -1,8 +1,8 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-function CustomTooltip({ children, tooltipText, key }) {
+function CustomTooltip({ children, tooltipText }) {
   return (
-    <TooltipProvider key={key} delayDuration={200}>
+    <TooltipProvider delayDuration={200}>
       <Tooltip>
         <TooltipTrigger>{children}</TooltipTrigger>
         <TooltipContent>{tooltipText}</TooltipContent>
