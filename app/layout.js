@@ -13,9 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body
-        className={`${inter.className} relative flex min-h-screen flex-col bg-primary-950 text-primary-100 antialiased`}
+        className={`${inter.className} bg-primary-950 text-primary-100 relative flex min-h-screen flex-col antialiased`}
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+          <Header />
           {children}
         </ThemeProvider>
       </body>

@@ -46,7 +46,6 @@ function Dashboard() {
 
   return (
     <div>
-      <Header />
       <div className='grid flex-1 p-8 pt-4'>
         <main className='mx-auto w-full max-w-7xl'>
           <Config onConfigChange={handleConfigChange} connectionStatus={connectStatus} />

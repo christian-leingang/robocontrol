@@ -58,8 +58,6 @@ const ChatList = ({ client, pingPong, setPingPong }) => {
               if (prevStates[robotId - 1].status === ROBOT_STATES.OFFLINE)
                 newStates[robotId - 1].status = ROBOT_STATES.READY;
 
-              console.log(new Date(), 'Pong received from robot', robotId);
-
               return newStates;
             });
           }
@@ -87,8 +85,6 @@ const ChatList = ({ client, pingPong, setPingPong }) => {
       setRobotStates((prevStates) => {
         const newStates = prevStates.map((robot) => {
           const timeSinceLastPong = new Date() - new Date(robot.lastPong);
-
-          console.log(new Date(robot.lastPong), 'timeSinceLastPong', timeSinceLastPong);
 
           if (timeSinceLastPong > 8000 && robot.status !== ROBOT_STATES.OFFLINE) {
             notify(robot.robot_id);
@@ -191,8 +187,6 @@ function getColorFromState(state) {
 function RoboStatus({ robot_id, status, lastPong, index, pingPong }) {
   const [timeSinceLastPongString, setTimeSinceLastPongString] = useState('offline');
   const [color, setColor] = useState(getColorFromState(status));
-
-  console.log(pingPong);
 
   useEffect(() => {
     setColor(getColorFromState(status));
