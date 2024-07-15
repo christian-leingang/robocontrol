@@ -7,7 +7,6 @@ import Config from '../_components/Config';
 import { useMqttClient } from '../_lib/useMqttClient';
 
 function Dashboard() {
-  const [pingPong, setPingPong] = useState(false);
   const [config, setConfig] = useState({});
   const { client, connectStatus } = useMqttClient(config);
 
@@ -17,19 +16,6 @@ function Dashboard() {
       client.publish(config.topic, JSON.stringify(message));
     }
   }, [connectStatus, client, config.topic]);
-
-  useEffect(() => {
-    if (!pingPong) return;
-
-    const intervalId = setInterval(() => {
-      if (connectStatus === 'Connected') {
-        const message = { msg: 'ping', sender_id: 99 };
-        client.publish(config.topic, JSON.stringify(message));
-      }
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, [client, connectStatus, config.topic, pingPong]);
 
   const handleConfigChange = (newConfig) => {
     if (
@@ -59,7 +45,7 @@ function Dashboard() {
           className={`mt-4 flex w-full gap-4 ${connectStatus === 'Connected' ? '' : 'pointer-events-none blur-2xl'} `}
         >
           <div className='w-1/2'>
-            <ChatList client={client} pingPong={pingPong} setPingPong={setPingPong} />
+            <ChatList client={client} configTopic={config.topic} connectStatus={connectStatus} />
           </div>
           <div className='w-1/2'>
             <PublishButtons client={client} topic={config.topic} />

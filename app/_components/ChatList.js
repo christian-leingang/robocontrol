@@ -12,10 +12,11 @@ const ROBOT_STATES = Object.freeze({
   RUNNING: 'running',
 });
 
-const ChatList = ({ client, pingPong, setPingPong }) => {
+const ChatList = ({ client, configTopic, connectStatus }) => {
   const notify = (robot_id) => toast(`Robot ${robot_id} is offline`, { type: 'error' });
 
   const senderIdWebApp = 99;
+  const [pingPong, setPingPong] = useState(false);
   const [messages, setMessages] = useState([]);
   const [robotStates, setRobotStates] = useState([
     { robot_id: 1, status: ROBOT_STATES.OFFLINE, lastPong: new Date().setHours(0, 0, 0) },
@@ -32,6 +33,21 @@ const ChatList = ({ client, pingPong, setPingPong }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    console.log('First');
+
+    if (!pingPong) return;
+
+    const intervalId = setInterval(() => {
+      if (connectStatus === 'Connected') {
+        const message = { msg: 'ping', sender_id: 99 };
+        client.publish(configTopic, JSON.stringify(message));
+      }
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [client, connectStatus, configTopic, pingPong]);
 
   useEffect(() => {
     if (!client) return;
@@ -79,30 +95,33 @@ const ChatList = ({ client, pingPong, setPingPong }) => {
   }, [client]);
 
   useEffect(() => {
+    console.log('Second');
+
     if (!pingPong) return;
 
     const checkRobotsOffline = () => {
-      setRobotStates((prevStates) => {
-        const newStates = prevStates.map((robot) => {
-          const timeSinceLastPong = new Date() - new Date(robot.lastPong);
-
-          if (timeSinceLastPong > 8000 && robot.status !== ROBOT_STATES.OFFLINE) {
-            notify(robot.robot_id);
-            return { ...robot, status: 'offline' };
-          }
-
-          return robot;
-        });
-        return newStates;
+      const newStates = robotStates.map((robot) => {
+        const timeSinceLastPong = new Date() - new Date(robot.lastPong);
+        if (timeSinceLastPong > 8000 && robot.status !== ROBOT_STATES.OFFLINE) {
+          notify(robot.robot_id);
+          return { ...robot, status: 'offline' };
+        }
+        return robot;
       });
+
+      if (JSON.stringify(robotStates) !== JSON.stringify(newStates)) {
+        setRobotStates(newStates);
+      }
     };
 
     const intervalId = setInterval(checkRobotsOffline, 1000);
 
     return () => clearInterval(intervalId);
-  }, [pingPong]);
+  }, [pingPong, robotStates]);
 
   const updateRobotState = (newState, senderId) => {
+    console.log('updateRobotState', newState, senderId);
+
     setRobotStates((prevStates) => {
       const newStates = [...prevStates];
       if (newStates[senderId - 1] !== undefined) {
@@ -128,7 +147,6 @@ const ChatList = ({ client, pingPong, setPingPong }) => {
               robot_id={robot_id}
               status={status}
               lastPong={lastPong}
-              index={index}
               pingPong={pingPong}
             />
           ))}
@@ -184,19 +202,34 @@ function getColorFromState(state) {
   }
 }
 
-function RoboStatus({ robot_id, status, lastPong, index, pingPong }) {
+function RoboStatus({ robot_id, status, lastPong, pingPong }) {
   const [timeSinceLastPongString, setTimeSinceLastPongString] = useState('offline');
   const [color, setColor] = useState(getColorFromState(status));
 
   useEffect(() => {
-    setColor(getColorFromState(status));
-    const timeSinceLastPong = new Date() - new Date(lastPong);
+    console.log('Third', status, lastPong);
 
-    setTimeSinceLastPongString(`${new Date(timeSinceLastPong).getSeconds()} seconds ago`);
-    if (timeSinceLastPong > 360000) {
-      setTimeSinceLastPongString('offline');
-    }
-  }, [robot_id, status, lastPong, index]);
+    setColor(getColorFromState(status));
+    const updateSecondsAgo = () => {
+      const timeSinceLastPong = new Date() - new Date(lastPong);
+      let minutes = Math.floor(timeSinceLastPong / 60000);
+      let seconds = Math.floor((timeSinceLastPong % 60000) / 1000);
+      let newTimeSinceLastPongString = `${seconds} seconds ago`;
+
+      if (minutes > 0) {
+        newTimeSinceLastPongString = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      }
+      if (timeSinceLastPong > 360000) {
+        newTimeSinceLastPongString = 'offline';
+      }
+      setTimeSinceLastPongString(newTimeSinceLastPongString);
+    };
+
+    updateSecondsAgo();
+
+    const intervalId = setInterval(updateSecondsAgo, 1000);
+    return () => clearInterval(intervalId);
+  }, [status, lastPong]);
 
   return (
     <div>

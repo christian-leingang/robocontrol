@@ -44,7 +44,7 @@ const Config = ({ onConfigChange, connectionStatus }) => {
   //Comment out if Client is constantly refreshing
   useEffect(() => {
     handleInitialSubmit();
-  }, []);
+  }, [handleInitialSubmit]);
 
   return (
     <form onSubmit={handleSubmit}>
