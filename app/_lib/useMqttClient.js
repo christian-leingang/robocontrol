@@ -7,15 +7,11 @@ export function useMqttClient(config) {
 
   useEffect(() => {
     if (!config.url) return;
-    console.log(config);
 
     const newClient = mqtt.connect(`${config.url}:${config.port}/${config.path ?? ''}`, {
       username: config.username,
       password: config.password,
     });
-    console.log(newClient);
-
-    console.log('Hier', `${config.url}:${config.port}/${config.path ?? ''}`);
 
     newClient.on('connect', () => {
       newClient.subscribe(config.topic);

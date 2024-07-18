@@ -32,8 +32,6 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
   }, [checkboxes]);
 
   useEffect(() => {
-    console.log('Reload Config', reloadConfig);
-
     if (reloadConfig) {
       setRandomActions(reloadConfig.random_actions_enabled);
       setCommunication(reloadConfig.communication_enabled);

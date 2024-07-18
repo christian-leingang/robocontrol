@@ -35,8 +35,6 @@ const ChatList = ({ client, configTopic, connectStatus, setReloadConfig }) => {
   }, [messages]);
 
   useEffect(() => {
-    console.log('First');
-
     if (!pingPong) return;
 
     const intervalId = setInterval(() => {
@@ -86,8 +84,6 @@ const ChatList = ({ client, configTopic, connectStatus, setReloadConfig }) => {
             updateRobotState('offline', parsedMessage.sender_id);
           }
           if (parsedMessage.msg === 'robot_ready' && parsedMessage.sender_id === 1) {
-            console.log('Hier', parsedMessage);
-
             setReloadConfig(parsedMessage.data);
           }
           parsedMessage.timestamp = timestamp;
@@ -100,8 +96,6 @@ const ChatList = ({ client, configTopic, connectStatus, setReloadConfig }) => {
   }, [client, setReloadConfig]);
 
   useEffect(() => {
-    console.log('Second');
-
     if (!pingPong) return;
 
     const checkRobotsOffline = () => {
@@ -125,8 +119,6 @@ const ChatList = ({ client, configTopic, connectStatus, setReloadConfig }) => {
   }, [pingPong, robotStates]);
 
   const updateRobotState = (newState, senderId) => {
-    console.log('updateRobotState', newState, senderId);
-
     setRobotStates((prevStates) => {
       const newStates = [...prevStates];
       if (newStates[senderId - 1] !== undefined) {
@@ -212,8 +204,6 @@ function RoboStatus({ robot_id, status, lastPong, pingPong }) {
   const [color, setColor] = useState(getColorFromState(status));
 
   useEffect(() => {
-    console.log('Third', status, lastPong);
-
     setColor(getColorFromState(status));
     const updateSecondsAgo = () => {
       const timeSinceLastPong = new Date() - new Date(lastPong);
