@@ -4,7 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { useEffect, useRef, useState } from 'react';
-import { IconPlayerPause, IconPlayerPlay, IconPlayerSkipForward, IconX } from '@tabler/icons-react';
+import {
+  IconMinus,
+  IconPlayerPause,
+  IconPlayerPlay,
+  IconPlayerSkipForward,
+  IconPlus,
+  IconX,
+} from '@tabler/icons-react';
 
 const PublishButtons = ({ client, topic, reloadConfig }) => {
   const [speedInput, setSpeedInput] = useState(60);
@@ -12,6 +19,7 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
   const [randomActions, setRandomActions] = useState(false);
   const [communication, setCommunication] = useState(false);
   const [activeSimulation, setActiveSimulation] = useState(false);
+  const [hideActions, setHideActions] = useState(false);
   const speedIntervall = [25, 50, 75, 100];
 
   const [allChecked, setAllChecked] = useState(true);
@@ -219,53 +227,62 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
             </div>
           ))}
         </div>
-        <h3 className='mt-6 text-xl font-semibold'>Actions</h3>
-
-        <div className='flex items-center gap-2'>
-          {buttonConfigs.map(({ action, color, text, icon: Icon }) => (
-            <Button
-              key={text}
-              onClick={action}
-              className={`my-2 rounded-md ${color}-500 w-1/5 px-4 py-2 shadow-md hover:brightness-95 hover:${color}-500`}
-              disabled={activeChecksCount === 0}
-            >
-              <p className='mr-1'>{text}</p> <Icon size={20} />
-            </Button>
-          ))}
+        <div className='mt-6 flex items-center'>
+          <Button
+            className='bg-inherit p-2 text-primary hover:bg-inherit active:bg-inherit'
+            onClick={() => setHideActions((prev) => !prev)}
+          >
+            {hideActions ? <IconPlus /> : <IconMinus />}
+          </Button>
+          <h3 className='text-xl font-semibold'>Actions</h3>
         </div>
-        <div>
-          <h3 className='mt-5 text-xl font-bold'>Speed</h3>
-          <div className='my-2 flex items-center gap-2'>
-            {speedIntervall.map((speed) => (
+        <div className={`${hideActions ? 'hidden' : ''}`}>
+          <div className='flex items-center gap-2'>
+            {buttonConfigs.map(({ action, color, text, icon: Icon }) => (
               <Button
-                key={speed}
-                onClick={() => sendSpeed(speed)}
-                className='w-1/4 rounded-md px-4 py-2 shadow-md'
+                key={text}
+                onClick={action}
+                className={`my-2 rounded-md ${color}-500 w-1/5 px-4 py-2 shadow-md hover:brightness-95 hover:${color}-500`}
                 disabled={activeChecksCount === 0}
               >
-                {speed}%
+                <p className='mr-1'>{text}</p> <Icon size={20} />
               </Button>
             ))}
           </div>
-          <div className='flex items-center gap-2'>
-            <Input
-              type='number'
-              id='speed'
-              value={speedInput}
-              onChange={(e) => setSpeedInput(e.target.value)}
-              min='10'
-              max='100'
-              step='10'
-              disabled={activeChecksCount === 0}
-              className='w-1/2 rounded-md border-2 border-gray-300 p-1'
-            />
-            <Button
-              onClick={() => sendSpeed(speedInput)}
-              className='w-1/2 rounded-md px-4 py-2 shadow-md'
-              disabled={activeChecksCount === 0}
-            >
-              Update Speed
-            </Button>
+          <div>
+            <h3 className='mt-5 text-xl font-bold'>Speed</h3>
+            <div className='my-2 flex items-center gap-2'>
+              {speedIntervall.map((speed) => (
+                <Button
+                  key={speed}
+                  onClick={() => sendSpeed(speed)}
+                  className='w-1/4 rounded-md px-4 py-2 shadow-md'
+                  disabled={activeChecksCount === 0}
+                >
+                  {speed}%
+                </Button>
+              ))}
+            </div>
+            <div className='flex items-center gap-2'>
+              <Input
+                type='number'
+                id='speed'
+                value={speedInput}
+                onChange={(e) => setSpeedInput(e.target.value)}
+                min='10'
+                max='100'
+                step='10'
+                disabled={activeChecksCount === 0}
+                className='w-1/2 rounded-md border-2 border-gray-300 p-1'
+              />
+              <Button
+                onClick={() => sendSpeed(speedInput)}
+                className='w-1/2 rounded-md px-4 py-2 shadow-md'
+                disabled={activeChecksCount === 0}
+              >
+                Update Speed
+              </Button>
+            </div>
           </div>
         </div>
       </div>

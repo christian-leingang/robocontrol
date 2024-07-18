@@ -74,6 +74,7 @@ const ChatList = ({ client, configTopic, connectStatus, setReloadConfig }) => {
 
               return newStates;
             });
+            return;
           }
 
           if (parsedMessage.msg === 'robot_ready' || parsedMessage.msg === 'robot_stop') {
