@@ -35,9 +35,9 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
     console.log('Reload Config', reloadConfig);
 
     if (reloadConfig) {
-      setRandomActions(reloadConfig.randomActions);
-      setCommunication(reloadConfig.communication);
-      setActiveSimulation(reloadConfig.activeSimulation);
+      setRandomActions(reloadConfig.random_actions_enabled);
+      setCommunication(reloadConfig.communication_enabled);
+      setActiveSimulation(reloadConfig.simulation_started);
     }
   }, [reloadConfig]);
 

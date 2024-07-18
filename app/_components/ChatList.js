@@ -85,7 +85,9 @@ const ChatList = ({ client, configTopic, connectStatus, setReloadConfig }) => {
           } else if (parsedMessage.msg === 'robot_end') {
             updateRobotState('offline', parsedMessage.sender_id);
           }
-          if (parsedMessage.msg === 'robot_ready' && parsedMessage.senderId === 1) {
+          if (parsedMessage.msg === 'robot_ready' && parsedMessage.sender_id === 1) {
+            console.log('Hier', parsedMessage);
+
             setReloadConfig(parsedMessage.data);
           }
           parsedMessage.timestamp = timestamp;
