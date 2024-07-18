@@ -133,7 +133,7 @@ const ChatList = ({ client, configTopic, connectStatus }) => {
   };
 
   return (
-    <div className='mx-auto h-[70vh] rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-800 dark:bg-slate-800'>
+    <div className='mx-auto h-[72vh] rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-800 dark:bg-slate-800'>
       <div className='flex flex-row items-baseline justify-between'>
         <h2 className='ml-4 mt-4 text-2xl font-semibold'>Chat</h2>
 
@@ -152,7 +152,7 @@ const ChatList = ({ client, configTopic, connectStatus }) => {
           ))}
         </div>
       </div>
-      <div className='flex h-[calc(70vh-3rem)] flex-col-reverse overflow-auto'>
+      <div className='flex h-[calc(72vh-3rem)] flex-col-reverse overflow-auto'>
         {messages.length === 0 && (
           <div className='my-auto flex h-full items-center justify-center text-sm'>
             No messages yet

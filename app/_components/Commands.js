@@ -118,21 +118,21 @@ const PublishButtons = ({ client, topic }) => {
   }
 
   return (
-    <div className='mx-auto h-fit min-h-[70vh] rounded-lg border border-gray-200 bg-white p-4 shadow-md dark:border-gray-800 dark:bg-slate-800'>
+    <div className='mx-auto h-fit min-h-[72vh] rounded-lg border border-gray-200 bg-white p-4 shadow-md dark:border-gray-800 dark:bg-slate-800'>
       <h2 className='mb-4 text-2xl font-semibold'>Publish Messages</h2>
 
       <div className='flex items-center gap-2'>
         {activeSimulation ? (
           <Button
             onClick={sendEndSimulation}
-            className={`my-2 rounded-md bg-zinc-500 px-4 py-2 shadow-lg hover:bg-zinc-500 hover:brightness-95`}
+            className={`my-2 rounded-md bg-zinc-500 px-4 py-2 shadow-md hover:bg-zinc-500 hover:brightness-95`}
           >
             <p className='mr-1'>End Simulation</p> <IconX size={20} />
           </Button>
         ) : (
           <Button
             onClick={sendStartSimulation}
-            className={`my-2 rounded-md bg-green-500 px-4 py-2 shadow-lg hover:bg-green-500 hover:brightness-95`}
+            className={`my-2 rounded-md bg-green-500 px-4 py-2 shadow-md hover:bg-green-500 hover:brightness-95`}
           >
             <p className='mr-1'>Start Simulation</p> <IconPlayerPlay size={20} />
           </Button>
@@ -140,8 +140,8 @@ const PublishButtons = ({ client, topic }) => {
       </div>
 
       <div className={`${activeSimulation ? '' : 'hidden'}`}>
-        <div className='mt-2 flex items-start gap-2'>
-          <div className='flex cursor-pointer items-center space-x-3 rounded-lg bg-gray-200 p-2 pr-3 shadow-lg transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'>
+        <div className='my-2 flex items-start gap-2'>
+          <div className='flex cursor-pointer items-center space-x-3 rounded-lg bg-gray-200 p-2 pr-3 shadow-md transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'>
             <Checkbox
               id='communication'
               checked={communication}
@@ -151,7 +151,7 @@ const PublishButtons = ({ client, topic }) => {
               Communication
             </label>
           </div>
-          <div className='flex cursor-pointer items-center space-x-3 rounded-lg bg-gray-200 p-2 pr-3 shadow-lg transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'>
+          <div className='flex cursor-pointer items-center space-x-3 rounded-lg bg-gray-200 p-2 pr-3 shadow-md transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'>
             <Checkbox
               id='random_actions'
               checked={randomActions}
@@ -176,7 +176,7 @@ const PublishButtons = ({ client, topic }) => {
               />
               <Button
                 onClick={() => sendRandomActionsTimeout(randomActionsTimeout)}
-                className='rounded-md px-4 py-2 shadow-lg'
+                className='rounded-md px-4 py-2 shadow-md'
                 disabled={activeChecksCount === 0}
               >
                 Update Timeout
@@ -185,9 +185,9 @@ const PublishButtons = ({ client, topic }) => {
           )}
         </div>
 
-        <h3 className='mb-2 mt-12 text-xl font-semibold'>Receivers</h3>
-        <div className='checkboxes flex gap-2'>
-          <div className='flex cursor-pointer items-center space-x-4 rounded-lg bg-gray-200 p-2 shadow-lg transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'>
+        <h3 className='mt-8 text-xl font-semibold'>Receivers</h3>
+        <div className='checkboxes my-2 flex gap-2'>
+          <div className='flex cursor-pointer items-center space-x-2 rounded-lg bg-gray-200 px-3 shadow-md transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'>
             <Checkbox
               id='all_robots'
               ref={allCheckboxRef}
@@ -201,7 +201,7 @@ const PublishButtons = ({ client, topic }) => {
           {Object.entries(checkboxes).map(([id, checked]) => (
             <div
               key={id}
-              className='flex cursor-pointer items-center space-x-4 rounded-lg bg-gray-200 p-2 shadow-lg transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'
+              className='flex cursor-pointer items-center space-x-2 rounded-lg bg-gray-200 p-2 px-3 shadow-md transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'
             >
               <Checkbox id={id} checked={checked} onCheckedChange={handleCheckboxChange(id)} />
               <label
@@ -218,7 +218,7 @@ const PublishButtons = ({ client, topic }) => {
             <Button
               key={text}
               onClick={action}
-              className={`my-2 rounded-md ${color}-500 w-1/5 px-4 py-2 shadow-lg hover:brightness-95 hover:${color}-500`}
+              className={`my-2 rounded-md ${color}-500 w-1/5 px-4 py-2 shadow-md hover:brightness-95 hover:${color}-500`}
               disabled={activeChecksCount === 0}
             >
               <p className='mr-1'>{text}</p> <Icon size={20} />
@@ -226,13 +226,13 @@ const PublishButtons = ({ client, topic }) => {
           ))}
         </div>
         <div>
-          <h3 className='mt-6 text-xl font-bold'>Speed</h3>
+          <h3 className='mt-5 text-xl font-bold'>Speed</h3>
           <div className='my-2 flex items-center gap-2'>
             {speedIntervall.map((speed) => (
               <Button
                 key={speed}
                 onClick={() => sendSpeed(speed)}
-                className='w-1/4 rounded-md px-4 py-2 shadow-lg'
+                className='w-1/4 rounded-md px-4 py-2 shadow-md'
                 disabled={activeChecksCount === 0}
               >
                 {speed}%
@@ -253,7 +253,7 @@ const PublishButtons = ({ client, topic }) => {
             />
             <Button
               onClick={() => sendSpeed(speedInput)}
-              className='w-1/2 rounded-md px-4 py-2 shadow-lg'
+              className='w-1/2 rounded-md px-4 py-2 shadow-md'
               disabled={activeChecksCount === 0}
             >
               Update Speed

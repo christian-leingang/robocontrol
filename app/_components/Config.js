@@ -16,15 +16,17 @@ const Config = ({ onConfigChange, connectionStatus }) => {
   const [port, setPort] = useState(process.env.NEXT_PUBLIC_MQTT_PORT);
   const [path, setPath] = useState(process.env.NEXT_PUBLIC_MQTT_PATH);
   const [topic, setTopic] = useState(process.env.NEXT_PUBLIC_MQTT_TOPIC);
+  const [username, setUsername] = useState(process.env.NEXT_PUBLIC_MQTT_USERNAME);
+  const [password, setPassword] = useState(process.env.NEXT_PUBLIC_MQTT_PASSWORD);
   const [passwordVisible, setPasswordVisibility] = useState(true);
   const [passwordType, setPasswordType] = useState('password');
 
   const handleInitialSubmit = () => {
-    if (!url || !port || !path || !topic) {
+    if (!url || !port || !username || !password || !topic) {
       console.log('Please fill all the fields');
       return;
     }
-    onConfigChange({ url, port, path, topic });
+    onConfigChange({ url, port, path, topic, username, password });
   };
 
   const handleSubmit = (e) => {
@@ -44,7 +46,7 @@ const Config = ({ onConfigChange, connectionStatus }) => {
   //Comment out if Client is constantly refreshing
   useEffect(() => {
     handleInitialSubmit();
-  }, [handleInitialSubmit]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -62,22 +64,44 @@ const Config = ({ onConfigChange, connectionStatus }) => {
             <Label htmlFor='url'>URL</Label>
             <Input type='text' id='url' value={url} onChange={(e) => setUrl(e.target.value)} />
           </div>
-          <div className='grid w-1/4 max-w-sm items-center gap-1.5'>
+          <div className='grid max-w-sm items-center gap-1.5'>
             <Label htmlFor='port'>Port</Label>
             <Input type='text' id='port' value={port} onChange={(e) => setPort(e.target.value)} />
           </div>
-          <div className='grid w-1/4 max-w-sm items-center gap-1.5'>
+          <div className='grid max-w-sm items-center gap-1.5'>
             <Label htmlFor='path'>Path</Label>
             <Input type='text' id='path' value={path} onChange={(e) => setPath(e.target.value)} />
           </div>
-          <div className='grid w-1/4 max-w-sm items-center gap-1.5'>
+
+          <div className='grid max-w-sm items-center gap-1.5'>
             <Label htmlFor='topic'>Topic</Label>
+            <Input
+              type='text'
+              id='topic'
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+            />
+          </div>
+
+          <div className='grid max-w-sm items-center gap-1.5'>
+            <Label htmlFor='username'>Username</Label>
+            <Input
+              type='text'
+              id='username'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+
+          <div className='grid max-w-sm items-center gap-1.5'>
+            <Label htmlFor='topic'>Password</Label>
             <div className='flex'>
               <Input
                 type={passwordType}
-                id='topic'
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
+                id='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className='pr-9'
               />
               <span
                 className='flex cursor-pointer items-center justify-around'

@@ -21,7 +21,8 @@ function Dashboard() {
     if (
       newConfig.url === config.url &&
       newConfig.port === config.port &&
-      newConfig.path === config.path &&
+      newConfig.username === config.username &&
+      newConfig.password === config.password &&
       newConfig.topic === config.topic
     )
       return;
@@ -30,7 +31,7 @@ function Dashboard() {
   };
 
   return (
-    <div className='grid flex-1 p-8 pt-4'>
+    <div className='grid flex-1 px-8 py-4'>
       <main className='mx-auto w-full max-w-7xl'>
         <Config onConfigChange={handleConfigChange} connectionStatus={connectStatus} />
         {connectStatus === 'Connected' ? (
