@@ -12,7 +12,7 @@ const ROBOT_STATES = Object.freeze({
   RUNNING: 'running',
 });
 
-const ChatList = ({ client, configTopic, connectStatus }) => {
+const ChatList = ({ client, configTopic, connectStatus, setReloadConfig }) => {
   const notify = (robot_id) => toast(`Robot ${robot_id} is offline`, { type: 'error' });
 
   const senderIdWebApp = 99;
@@ -85,6 +85,9 @@ const ChatList = ({ client, configTopic, connectStatus }) => {
           } else if (parsedMessage.msg === 'robot_end') {
             updateRobotState('offline', parsedMessage.sender_id);
           }
+          if (parsedMessage.msg === 'robot_ready' && parsedMessage.senderId === 1) {
+            setReloadConfig(parsedMessage.data);
+          }
           parsedMessage.timestamp = timestamp;
         } catch (error) {
           parsedMessage = { msg: message.toString(), sender_id: 'unknown', timestamp };
@@ -92,7 +95,7 @@ const ChatList = ({ client, configTopic, connectStatus }) => {
         setMessages((prevMessages) => [...prevMessages, parsedMessage]);
       });
     }
-  }, [client]);
+  }, [client, setReloadConfig]);
 
   useEffect(() => {
     console.log('Second');

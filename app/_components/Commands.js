@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useEffect, useRef, useState } from 'react';
 import { IconPlayerPause, IconPlayerPlay, IconPlayerSkipForward, IconX } from '@tabler/icons-react';
 
-const PublishButtons = ({ client, topic }) => {
+const PublishButtons = ({ client, topic, reloadConfig }) => {
   const [speedInput, setSpeedInput] = useState(60);
   const [randomActionsTimeout, setRandomActionsTimeout] = useState(10);
   const [randomActions, setRandomActions] = useState(false);
@@ -30,6 +30,16 @@ const PublishButtons = ({ client, topic }) => {
     setAllChecked(allSelected);
     allCheckboxRef.current.indeterminate = !allSelected && anySelected;
   }, [checkboxes]);
+
+  useEffect(() => {
+    console.log('Reload Config', reloadConfig);
+
+    if (reloadConfig) {
+      setRandomActions(reloadConfig.randomActions);
+      setCommunication(reloadConfig.communication);
+      setActiveSimulation(reloadConfig.activeSimulation);
+    }
+  }, [reloadConfig]);
 
   const handleAllChange = (e) => {
     const isChecked = e;

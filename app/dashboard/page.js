@@ -8,6 +8,7 @@ import { useMqttClient } from '../_lib/useMqttClient';
 
 function Dashboard() {
   const [config, setConfig] = useState({});
+  const [reloadConfig, setReloadConfig] = useState({});
   const { client, connectStatus } = useMqttClient(config);
 
   useEffect(() => {
@@ -46,10 +47,15 @@ function Dashboard() {
           className={`mt-4 flex w-full gap-4 ${connectStatus === 'Connected' ? '' : 'pointer-events-none blur-2xl'} `}
         >
           <div className='w-1/2'>
-            <ChatList client={client} configTopic={config.topic} connectStatus={connectStatus} />
+            <ChatList
+              client={client}
+              configTopic={config.topic}
+              connectStatus={connectStatus}
+              setReloadConfig={setReloadConfig}
+            />
           </div>
           <div className='w-1/2'>
-            <PublishButtons client={client} topic={config.topic} />
+            <PublishButtons client={client} topic={config.topic} reloadConfig={reloadConfig} />
           </div>
         </div>
       </main>
