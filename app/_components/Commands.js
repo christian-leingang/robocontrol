@@ -12,14 +12,15 @@ import {
   IconPlus,
   IconX,
 } from '@tabler/icons-react';
+import { Switch } from '@/components/ui/switch';
 
 const PublishButtons = ({ client, topic, reloadConfig }) => {
   const [speedInput, setSpeedInput] = useState(60);
   const [randomActionsTimeout, setRandomActionsTimeout] = useState(10);
   const [randomActions, setRandomActions] = useState(false);
-  const [communication, setCommunication] = useState(false);
+  const [communication, setCommunication] = useState(true);
   const [activeSimulation, setActiveSimulation] = useState(false);
-  const [hideActions, setHideActions] = useState(false);
+  const [hideSpeed, setHideSpeed] = useState(true);
   const speedIntervall = [25, 50, 75, 100];
 
   const [allChecked, setAllChecked] = useState(true);
@@ -40,7 +41,7 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
   }, [checkboxes]);
 
   useEffect(() => {
-    if (reloadConfig) {
+    if (reloadConfig.simulation_started) {
       setRandomActions(reloadConfig.random_actions_enabled);
       setCommunication(reloadConfig.communication_enabled);
       setActiveSimulation(reloadConfig.simulation_started);
@@ -103,7 +104,6 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
 
   function sendEndSimulation() {
     setActiveSimulation(false);
-    setCommunication(false);
     setRandomActions(false);
     const message = createMessage('end_simulation');
     sendMessage(message);
@@ -134,44 +134,47 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
   }
 
   return (
-    <div className='mx-auto h-fit min-h-[72vh] rounded-lg border border-gray-200 bg-white p-4 shadow-md dark:border-gray-800 dark:bg-slate-800'>
-      <h2 className='mb-4 text-2xl font-semibold'>Publish Messages</h2>
+    <div className='mx-auto h-fit min-h-[72vh] rounded-lg border border-gray-200 bg-white p-4 pt-2 shadow-md dark:border-gray-800 dark:bg-slate-800'>
+      <div className='flex items-center justify-between'>
+        <h2 className='text-2xl font-semibold'>Publish Messages</h2>
 
-      <div className='flex items-center gap-2'>
-        {activeSimulation ? (
-          <Button
-            onClick={sendEndSimulation}
-            className={`my-2 rounded-md bg-zinc-500 px-4 py-2 shadow-md hover:bg-zinc-500 hover:brightness-95`}
-          >
-            <p className='mr-1'>End Simulation</p> <IconX size={20} />
-          </Button>
-        ) : (
-          <Button
-            onClick={sendStartSimulation}
-            className={`my-2 rounded-md bg-green-500 px-4 py-2 shadow-md hover:bg-green-500 hover:brightness-95`}
-          >
-            <p className='mr-1'>Start Simulation</p> <IconPlayerPlay size={20} />
-          </Button>
-        )}
+        <div className='flex items-center gap-2'>
+          {activeSimulation ? (
+            <Button
+              onClick={sendEndSimulation}
+              className={`my-2 rounded-md bg-zinc-500 px-4 py-2 shadow-md hover:bg-zinc-500 hover:brightness-95`}
+            >
+              <p className='mr-1'>End Simulation</p> <IconX size={20} />
+            </Button>
+          ) : (
+            <Button
+              onClick={sendStartSimulation}
+              className={`my-2 rounded-md bg-green-500 px-4 py-2 shadow-md hover:bg-green-500 hover:brightness-95`}
+            >
+              <p className='mr-1'>Start Simulation</p> <IconPlayerPlay size={20} />
+            </Button>
+          )}
+        </div>
       </div>
-
-      <div className={`${activeSimulation ? '' : 'hidden'}`}>
-        <div className='my-2 flex items-start gap-2'>
-          <div className='flex cursor-pointer items-center space-x-3 rounded-lg bg-gray-200 p-2 pr-3 shadow-md transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'>
-            <Checkbox
-              id='communication'
-              checked={communication}
-              onCheckedChange={toggleCommunication}
-            />
-            <label htmlFor='communication' className='cursor-pointer font-medium'>
-              Communication
-            </label>
-          </div>
-          <div className='flex cursor-pointer items-center space-x-3 rounded-lg bg-gray-200 p-2 pr-3 shadow-md transition-colors duration-200 ease-in-out hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600'>
-            <Checkbox
+      <div className={`${activeSimulation ? '' : 'hidden'} mt-2`}>
+        <div className='flex cursor-pointer items-center space-x-3'>
+          <Switch
+            id='communication'
+            checked={communication}
+            onCheckedChange={toggleCommunication}
+            className='dark:data-[state="checked"]:bg-white dark:data-[state="unchecked"]:bg-slate-600'
+          />
+          <label htmlFor='communication' className='cursor-pointer font-medium'>
+            Communication
+          </label>
+        </div>
+        <div className='my-2 flex h-8 items-center gap-2'>
+          <div className='flex cursor-pointer items-center space-x-3'>
+            <Switch
               id='random_actions'
               checked={randomActions}
               onCheckedChange={toggleRandomActions}
+              className='dark:data-[state="checked"]:bg-white dark:data-[state="unchecked"]:bg-slate-600'
             />
             <label htmlFor='random_actions' className='cursor-pointer font-medium'>
               Random Actions
@@ -227,30 +230,31 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
             </div>
           ))}
         </div>
+        <h3 className='mt-6 text-xl font-semibold'>Actions</h3>
+
+        <div className='flex items-center gap-2'>
+          {buttonConfigs.map(({ action, color, text, icon: Icon }) => (
+            <Button
+              key={text}
+              onClick={action}
+              className={`my-2 rounded-md ${color}-500 w-1/5 px-4 py-2 shadow-md hover:brightness-95 hover:${color}-500`}
+              disabled={activeChecksCount === 0}
+            >
+              <p className='mr-1'>{text}</p> <Icon size={20} />
+            </Button>
+          ))}
+        </div>
         <div className='mt-6 flex items-center'>
           <Button
-            className='bg-inherit p-2 text-primary hover:bg-inherit active:bg-inherit'
-            onClick={() => setHideActions((prev) => !prev)}
+            className='bg-inherit p-2 pl-0 text-primary hover:bg-inherit active:bg-inherit'
+            onClick={() => setHideSpeed((prev) => !prev)}
           >
-            {hideActions ? <IconPlus /> : <IconMinus />}
+            {hideSpeed ? <IconPlus /> : <IconMinus />}
           </Button>
-          <h3 className='text-xl font-semibold'>Actions</h3>
+          <h3 className='text-xl font-semibold'>Speed</h3>
         </div>
-        <div className={`${hideActions ? 'hidden' : ''}`}>
-          <div className='flex items-center gap-2'>
-            {buttonConfigs.map(({ action, color, text, icon: Icon }) => (
-              <Button
-                key={text}
-                onClick={action}
-                className={`my-2 rounded-md ${color}-500 w-1/5 px-4 py-2 shadow-md hover:brightness-95 hover:${color}-500`}
-                disabled={activeChecksCount === 0}
-              >
-                <p className='mr-1'>{text}</p> <Icon size={20} />
-              </Button>
-            ))}
-          </div>
+        <div className={`${hideSpeed ? 'hidden' : ''}`}>
           <div>
-            <h3 className='mt-5 text-xl font-bold'>Speed</h3>
             <div className='my-2 flex items-center gap-2'>
               {speedIntervall.map((speed) => (
                 <Button
