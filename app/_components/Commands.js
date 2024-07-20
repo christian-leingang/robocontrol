@@ -41,7 +41,7 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
   }, [checkboxes]);
 
   useEffect(() => {
-    if (reloadConfig.simulation_started) {
+    if (reloadConfig && reloadConfig.simulation_started) {
       setRandomActions(reloadConfig.random_actions_enabled);
       setCommunication(reloadConfig.communication_enabled);
       setActiveSimulation(reloadConfig.simulation_started);
