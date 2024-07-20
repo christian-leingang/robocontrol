@@ -93,7 +93,7 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
   }
 
   function sendPause() {
-    const message = createMessage('pause_robot');
+    const message = createMessage('pause_robot', null, true);
     sendMessage(message);
   }
 
@@ -110,7 +110,7 @@ const PublishButtons = ({ client, topic, reloadConfig }) => {
   }
 
   function sendUnpause() {
-    const message = createMessage('resume_robot');
+    const message = createMessage('resume_robot', null, true);
     sendMessage(message);
   }
 
