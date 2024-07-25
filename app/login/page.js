@@ -17,7 +17,7 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (password === 'amr_top_Secret_P@ssword_1234_') {
-      document.cookie = 'isAuthenticated=for_amr_secret; path=/; max-age=360000';
+      document.cookie = 'isAuthenticated=for_amr_secret; path=/; max-age=36000000';
       localStorage.setItem('isAuthenticated', 'for_amr_secret');
       window.location.href = '/';
     } else {
