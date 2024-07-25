@@ -166,7 +166,7 @@ const ChatList = ({ client, configTopic, connectStatus, setReloadConfig }) => {
                 <p className='text-[0.83rem] font-bold'>
                   {msg.sender_id === senderIdWebApp ? '' : `${msg.sender_id}`}
                 </p>
-                {msg.msg} {msg.data ? JSON.stringify(msg.data) : ''}
+                {msg.msg} {msg.data ? JSON.stringify(msg.data, null, 4) : ''}
                 {msg.receivers ? ` , Receivers: ${msg.receivers}` : ''}
               </div>
               {msg.timestamp && (
